@@ -17,9 +17,9 @@ public class RepositoryTest {
 public void shouldReturnMoviesSet(){
 	RestClient restClient = new UniRestClient("http://netflixroulette.net/api/api.php");
 	NetflixRepository netflixRepository = new NetflixRepositoryImpl(restClient);
-	NetflixService movieService = new NetflixService(netflixRepository);
+	NetflixService netflixService = new NetflixService(netflixRepository);
 	SearchCriteria searchCriteria = new SearchCriteria("Attack on Titan","","","2013");
-	Movies movies = movieService.getMoviesBy(searchCriteria);
+	Movies movies = netflixService.getMoviesBy(searchCriteria);
 	Assert.assertNotNull(movies.getMovies());
 	System.out.println(movies);
 }
