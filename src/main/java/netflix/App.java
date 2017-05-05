@@ -1,5 +1,6 @@
 package netflix;
 
+import java.awt.datatransfer.StringSelection;
 import java.util.function.Function;
 
 import com.google.gson.Gson;
@@ -20,8 +21,14 @@ public class App
 {
     public static void main( String[] args )
     {
+    	//URL for Netflix REST endpoint
+    	String url =  System.getProperty("url");
+    	if (url == null || url.isEmpty()) {
+    		url = "http://netflixroulette.net/api/api.php";
+    	}
+    	
     	//dependecies
-    	RestClient restClient = new UniRestClient("http://netflixroulette.net/api/api.php");
+    	RestClient restClient = new UniRestClient(url);
     	NetflixRepository netflixRepository = new NetflixRepositoryImpl(restClient);
     	NetflixService netflixService = new NetflixService(netflixRepository);
     	

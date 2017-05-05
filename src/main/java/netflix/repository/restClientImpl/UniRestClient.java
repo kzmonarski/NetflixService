@@ -4,6 +4,9 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -13,7 +16,6 @@ import com.google.gson.JsonParseException;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 import netflix.model.MovieDetails;
 import netflix.model.Movies;
@@ -22,7 +24,9 @@ import netflix.repository.RestClient;
 
 public class UniRestClient implements RestClient {
 	
-	final String endpoint;
+	private static final Logger logger = LoggerFactory.getLogger(UniRestClient.class);
+	
+	private final String endpoint;
 	
 	public UniRestClient(final String endpoint) {
 		
@@ -50,7 +54,8 @@ public class UniRestClient implements RestClient {
 			HttpResponse<Movies> movies = null;
 			try {
 				movies = Unirest.get(endpoint).queryString(searchCriteria.getMapRepresentation()).asObject(Movies.class);
-			} catch (UnirestException e) {
+			} catch (Exception e) {
+				logger.error("An Exception was thrown while connecting to " + endpoint + " ,because of" + e.getMessage());
 				throw new RuntimeException(e.getMessage());
 			}
 			return movies.getBody();
