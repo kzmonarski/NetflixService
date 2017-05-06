@@ -11,3 +11,10 @@
   top:  10px;
   left: 145px;
 }
+.poster {
+  height: 250px;
+  width:  250px
+}
+.total{
+  color: blue
+}

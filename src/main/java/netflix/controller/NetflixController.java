@@ -34,6 +34,7 @@ public static final String GetMoviesPath = "/getMovies.json";
 														   request.queryParams("actor"),request.queryParams("year"));
 		
 		Movies movies = netflixService.getMoviesBy(searchCriteria);
+		response.type("application/json");
 		logger.debug("Collection of movies is " + movies);
 	    return  movies;
 		};
