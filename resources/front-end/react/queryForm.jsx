@@ -1,46 +1,42 @@
 import React from 'react';
 import FORMS from 'newforms';
 
-export default class QueryForm extends React.Component {
+export default class Queryform extends React.Component {
 constructor(props) {
         super(props);
-        this.state = {queryForm : this.getQueryForm()};
+        this.state = {form : this.getform()};
         this.onSubmit = this.onSubmit.bind(this);
         this.onFormChange = this.onFormChange.bind(this);
     }
-	
+
 	onFormChange() {
 	  this.forceUpdate();
-	  console.log('data ' + this.state.queryForm.data.title)
-	  console.log('cleaned data' + this.state.queryForm.cleanedData.title)
 	}
-	
-    onSubmit (e) {
-      e.preventDefault();
-      if (this.state.queryForm.isValid()) {
-        this.props.getData(this.state.queryForm.data)
-      }
-      }
 
-    getQueryForm() {
-      var QueryForm= FORMS.Form.extend({
+    onSubmit (event) {
+      event.preventDefault();
+      if (!this.state.form.cleanedData.title && !this.state.form.cleanedData.actor
+         && !this.state.form.cleanedData.director && !this.state.form.cleanedData.releaseYear) {
+          this.state.form.addError('',"You haven't specified any valid fields");
+          this.onFormChange();
+      }
+      else if (this.state.form.isValid()) {
+        this.props.getData(this.state.form.cleanedData);
+        }
+    }
+
+    getform() {
+      var form= FORMS.Form.extend({
             title: FORMS.CharField({required: false}),
             director: FORMS.CharField({required: false}),
             actor: FORMS.CharField({required: false}),
-            releaseYear: FORMS.IntegerField({required: false}),
-
-       cleanReleaseYear() {
-         if (this.cleanedData.releaseYear  && !this.cleanedData.title) {
-          this.addError('releaseYear', "A title is also necessary")
-         }
-    },
+            releaseYear: FORMS.DateField({required: false, inputFormats: ['%Y'],errorMessages: {invalid: "It's not a year"}}),
 
       clean() {
-		if (this.data.title===""  && this.data.director==="" && this.data.director==="" && this.data.releaseYear==="") {
-		  throw FORMS.ValidationError("You haven't specified any fields");
-	  	}
-
-	  },
+		   if (this.cleanedData.releaseYear && !this.cleanedData.title) {
+          throw FORMS.ValidationError("If release year is specified then a title is also necessary");
+       }
+	    },
 
       render: function() {
 	     return this.boundFields().map(this.renderField.bind(this))
@@ -48,20 +44,19 @@ constructor(props) {
 
 	   renderField: function(bf) {
 	    var display = <div>
-	    				<div>{bf.errors().render()}</div>
-		  				<div>{bf.label}</div>
-		  				<div>{bf.render()}</div>
-		  			  </div>;
+		  				         {bf.labelTag()}{bf.render()}<span className='error'>{bf.errors().messages()}</span>
+		  			        </div>;
 	    return display;
   },
       });
-    return new QueryForm({controlled: true, onChange: this.onFormChange.bind(this)})
+    return new form({controlled: true, onChange: this.onFormChange.bind(this)})
     }
 
   render () {
-    return  <form>
-              {this.state.queryForm.render()}
-              <input type="button" onClick={this.onSubmit} value="Submit" />
-            </form>;
+      return <form className='form-field'>
+              <div className='error'>{this.state.form.nonFieldErrors().messages()}</div>
+              {this.state.form.render()}
+              <input className='center' type="button" onClick={this.onSubmit} value="Submit" />
+            </form>
   }
 }
