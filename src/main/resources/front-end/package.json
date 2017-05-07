@@ -1,0 +1,23 @@
+{
+  "name": "netflix",
+  "version": "1.0.0",
+  "description": "netflix service",
+  "main": "bundle",
+  "scripts": {
+    "dev": "webpack -d --watch",
+    "build": "webpack -p"
+  },
+  "author": "Kamil Zmonarski",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "newforms": "^0.13.2",
+    "react": "^15.5.4",
+    "react-bootstrap-table": "^3.3.1",
+    "react-dom": "^15.5.4",
+    "webpack": "^2.4.1"
+  }
+}
