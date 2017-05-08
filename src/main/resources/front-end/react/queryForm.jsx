@@ -4,7 +4,7 @@ import FORMS from 'newforms';
 export default class Queryform extends React.Component {
 	constructor(props) {
      super(props);
-     this.state = {form : this.getform()};
+     this.state = {form : this.getForm()};
      this.onSubmit = this.onSubmit.bind(this);
      this.onFormChange = this.onFormChange.bind(this);
      this.submitQuery = this.submitQuery.bind(this);
@@ -38,7 +38,7 @@ export default class Queryform extends React.Component {
       this.props.getQuery(query);
     }
 
-    getform() {
+    getForm() {
       var form= FORMS.Form.extend({
             title: FORMS.CharField({required: false}),
             director: FORMS.CharField({required: false}),
@@ -47,8 +47,10 @@ export default class Queryform extends React.Component {
 
       clean() {
 		   if (this.cleanedData.releaseDate && !this.cleanedData.title) {
-          throw FORMS.ValidationError("If release year is specified then a title is also necessary");
-       }
+          	throw FORMS.ValidationError("If release year is specified then a title is also necessary");
+       } else if (this.cleanedData.releaseDate && (this.cleanedData.director || this.cleanedData.actor)) {
+       			throw FORMS.ValidationError("Release year can be only specified in conjunction with a title");	
+       			}
 	    },
 
       render: function() {
@@ -57,8 +59,8 @@ export default class Queryform extends React.Component {
 
 	   renderField: function(bf) {
 	    var display = <div>
-		  				         {bf.labelTag()}{bf.render()}<span className='client-error'>{bf.errors().messages()}</span>
-		  			        </div>;
+		  				 {bf.labelTag()}{bf.render()}<span className='client-error'>{bf.errors().messages()}</span>
+		  			  </div>;
 	    return display;
   },
       });
@@ -66,10 +68,12 @@ export default class Queryform extends React.Component {
     }
 
   render () {
-      return <form className='form-field'>
-              <div className='client-error'>{this.state.form.nonFieldErrors().messages()}</div>
-              {this.state.form.render()}
-              <input className='center' type="button" onClick={this.onSubmit} value="Submit" />
+      return <form className='form-label' onSubmit={this.onSubmit}>
+              	<div className='client-error'>
+              		{this.state.form.nonFieldErrors().messages()}
+              	</div>
+              	{this.state.form.render()}
+              	<input className='btn button-center' type="submit" value="Submit" />
             </form>
   }
 }

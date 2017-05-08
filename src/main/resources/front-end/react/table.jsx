@@ -9,9 +9,8 @@ export default class Table extends React.Component {
     }
 
     componentWillReceiveProps (nextProps) {
-    console.log('next movies props ' + nextProps.movies.length)
     	if ($.isEmptyObject(nextProps.movies)) {
-  			this.setState({emptyTableMessage: this.getEmptyTableMessage("There aren't any movies that match search criteria")})
+  			this.setState({emptyTableMessage: this.getEmptyTableMessage("There aren't any movies that match the last search criteria")})
   		};
   	}
 
@@ -62,7 +61,7 @@ export default class Table extends React.Component {
       paginationPosition: 'top'
     };
 
-  	const moviesTable =  <div>
+  	const moviesTable =  <div className='movies-table'>
        		 				<BootstrapTable data={this.props.movies} striped={true} pagination={true} options={options}>
          						<TableHeaderColumn dataField='show_title' width="400px" dataSort={true} isKey={true}>Movie Name</TableHeaderColumn>
          						<TableHeaderColumn dataField='poster' dataFormat={getPoster}>Poster</TableHeaderColumn>

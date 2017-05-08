@@ -33,8 +33,9 @@ constructor(props) {
 
   render () {
   
-    return <div>
-              <QueryForm getQuery={this.submitRequest}/>
+    return <div className='app-center'>
+    		  <h1 className="title">Netflix Movies Search</h1>
+              <QueryForm  getQuery={this.submitRequest}/>
               <Table movies={this.state.movies} errorMessage={this.state.errorMessage}/>
            </div>;
   }
