@@ -6,10 +6,7 @@ import netflix.controller.IndexController;
 import netflix.controller.NetflixController;
 import netflix.model.ErrorMessage;
 import netflix.model.NetFlixServiceException;
-import netflix.model.NetFlixServiceException.ExportBuilder;
 import netflix.repository.NetflixRepositoryImpl;
-import netflix.repository.RestClient;
-import netflix.repository.restClientImpl.UniRestClient;
 import netflix.service.NetflixRepository;
 import netflix.service.NetflixService;
 import spark.ResponseTransformer;
@@ -23,12 +20,9 @@ public class App
 	
 @SuppressWarnings("unchecked")
 public static void main( String[] args )
-    {
-    	String url = getNetflixEndpointURL();
-    	
+    {	
     	//dependecies
-    	RestClient restClient = new UniRestClient(url);
-    	NetflixRepository netflixRepository = new NetflixRepositoryImpl(restClient);
+    	NetflixRepository netflixRepository = new NetflixRepositoryImpl(getNetflixEndpointURL());
     	NetflixService netflixService = new NetflixService(netflixRepository);
     	
     	//Web App set up
@@ -42,14 +36,26 @@ public static void main( String[] args )
     	//ExceptionHandling
     	Spark.exception(NetFlixServiceException.class, (exception, request, response) -> {
     		response.type(APPLICATION_JSON);  
-    		response.status(400);
-			response.body(((NetFlixServiceException)exception).exportTo((ExportBuilder)gsonResponseTransformer));
+    		response.status(getPort());
+			response.body(((NetFlixServiceException)exception).exportTo(new Gson()::toJson));
     	});
     	Spark.internalServerError((req, res) -> {
     	    res.type(APPLICATION_JSON);
     	    return gsonResponseTransformer.render(new ErrorMessage("Couldn't connect to NetFlix"));
     	});
     }
+
+private static int getPort() {
+	int portn = 4567;
+	String ports =  System.getProperty("port");
+	try {
+		portn = Integer.valueOf(ports);
+	}
+	catch(NumberFormatException e) {
+		return portn;
+	}
+	return portn;
+}
 
 private static String getNetflixEndpointURL() {
 	String url =  System.getProperty("url");

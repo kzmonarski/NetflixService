@@ -1,20 +1,35 @@
 .form-field label{
   display: inline-block;
-  width: 140px;
+  width: 100px;
   text-align: right;
 }
-.error {
-  color : red
+.client-error {
+  color : red;
+  font-size: medium;
 }
 .center {
   position: relative;
   top:  10px;
   left: 145px;
 }
-.poster {
-  height: 250px;
-  width:  250px
-}
 .total{
   color: blue
+}
+.no-items {
+ position: relative;
+ top: 10px;
+ left: 30px;
+ color: blue;
+ font-size: medium;
+}
+.server-error {
+ position: relative;
+ top: 10px;
+ left: 30px;
+ color: red;
+ font-size: medium;
+}
+.poster-error {
+color: red;
+font-size: medium;
 }

@@ -6,17 +6,18 @@ import Table from './table.jsx';
 class App extends React.Component {
 constructor(props) {
         super(props);
-        this.state = {movies : [{}]};
+        this.state = {movies : [],
+        			  errorMessage: ''};
         this.submitRequest = this.submitRequest.bind(this);
     }
 
   submitRequest(data) {
-  	console.log('submit request gets called: ' + data);
+  	console.log('Submit request gets called: ' + data);
   	$.ajax({
     url: "getMovies.json",
     type: "get",
     dataType: "json",
-    data: {title: data.title, director: data.director, actor: data.actor, year: data.year},
+    data: {title: data.title, director: data.director, actor: data.actor, year: data.releaseYear},
     
     success: function(response) {
         console.log(response);
@@ -25,23 +26,16 @@ constructor(props) {
     
     error: function(xhr) {
         console.log(xhr);
+        this.setState({errorMessage: xhr.responseJSON.message});
     }.bind(this)
 	});
   }
 
   render () {
- 
-  const data = [{
-      show_title: 'Attack on Titan',
-      poster: 'http:\/\/cdn-2.nflximg.com\/en_us\/boxshots\/ghd\/70299043.jpg'
-    },{
-    show_title: 'The Boondocks',
-    poster: 'http:\/\/cdn-2.nflximg.com\/en_us\/boxshots\/ghd\/70153391.jpg'
-    }]
-
+  
     return <div>
-              <QueryForm getData={this.submitRequest}/>
-              <Table data={this.state.movies}/>
+              <QueryForm getQuery={this.submitRequest}/>
+              <Table movies={this.state.movies} errorMessage={this.state.errorMessage}/>
            </div>;
   }
 }

@@ -3,6 +3,7 @@ package netflix.model;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class SearchCriteria {
 	

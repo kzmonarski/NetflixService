@@ -7,22 +7,18 @@ import org.junit.Test;
 import netflix.model.Movies;
 import netflix.model.SearchCriteria;
 import netflix.repository.NetflixRepositoryImpl;
-import netflix.repository.RestClient;
-import netflix.repository.restClientImpl.UniRestClient;
-import netflix.service.NetflixService;
 import netflix.service.NetflixRepository;
+import netflix.service.NetflixService;
 
 public class RepositoryTest {
 	
 @Test
 public void shouldReturnMoviesSet(){
-	RestClient restClient = new UniRestClient("http://netflixroulette.net/api/api.php");
-	NetflixRepository netflixRepository = new NetflixRepositoryImpl(restClient);
+	NetflixRepository netflixRepository = new NetflixRepositoryImpl("http://netflixroulette.net/api/api.php");
 	NetflixService netflixService = new NetflixService(netflixRepository);
 	SearchCriteria searchCriteria = new SearchCriteria("Attack on Titan","","","2013");
 	Movies movies = netflixService.getMoviesBy(searchCriteria);
-	Assert.assertNotNull(movies.getMovies());
-	System.out.println(movies);
+	Assert.assertEquals("The movie is not present","Attack on Titan",movies.getMovies().iterator().next().getShowTitle());
 }
 	
 }

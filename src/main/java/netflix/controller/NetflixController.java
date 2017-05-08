@@ -1,6 +1,7 @@
 package netflix.controller;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +30,13 @@ public static final String GetMoviesPath = "/getMovies.json";
 		Route route = (Request request, Response response) -> {	
 		logger.debug(String.format("Get request for movies collection with query params: title=%s director=%s actor=%s year=%s",
 					request.queryParams("title"),request.queryParams("director"),request.queryParams("actor"),request.queryParams("year")));
-			
-		SearchCriteria searchCriteria = new SearchCriteria(request.queryParams("title"),request.queryParams("director"),
-														   request.queryParams("actor"),request.queryParams("year"));
+		
+		String title = Optional.ofNullable(request.queryParams("title")).orElse("");
+		String director = Optional.ofNullable(request.queryParams("director")).orElse("");
+		String actor = Optional.ofNullable(request.queryParams("actor")).orElse("");
+		String year = Optional.ofNullable(request.queryParams("year")).orElse("");
+		
+		SearchCriteria searchCriteria = new SearchCriteria(title,director,actor,year);
 		
 		Movies movies = netflixService.getMoviesBy(searchCriteria);
 		response.type("application/json");
