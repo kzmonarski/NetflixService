@@ -26,7 +26,7 @@ public static void main( String[] args )
     	NetflixService netflixService = new NetflixService(netflixRepository);
     	
     	//Web App set up
-    	Spark.port(4567);
+    	Spark.port(getPort());
     	Spark.staticFiles.location("/public");
     	 
     	//Web URI binding
@@ -36,7 +36,7 @@ public static void main( String[] args )
     	//ExceptionHandling
     	Spark.exception(NetFlixServiceException.class, (exception, request, response) -> {
     		response.type(APPLICATION_JSON);  
-    		response.status(getPort());
+    		response.status();
 			response.body(((NetFlixServiceException)exception).exportTo(new Gson()::toJson));
     	});
     	Spark.internalServerError((req, res) -> {
