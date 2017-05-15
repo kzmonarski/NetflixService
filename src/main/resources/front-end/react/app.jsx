@@ -7,7 +7,7 @@ class App extends React.Component {
 constructor(props) {
         super(props);
         this.state = {movies : [],
-        			  errorMessage: ''};
+        			       errorMessage: ''};
         this.submitRequest = this.submitRequest.bind(this);
     }
 
@@ -17,26 +17,36 @@ constructor(props) {
     url: "getMovies.json",
     type: "get",
     dataType: "json",
-    data: {title: data.title, director: data.director, actor: data.actor, year: data.releaseYear},
-    
+    data: data,
+
     success: function(response) {
         console.log(response);
         this.setState({movies:response.movies});
     }.bind(this),
-    
+
     error: function(xhr) {
         console.log(xhr);
-        this.setState({errorMessage: xhr.responseJSON.message});
+        if (xhr.responseJSON) {
+          this.setState({errorMessage: xhr.responseJSON.message});
+        } else {
+          this.setState({errorMessage: "Couldn't connect to Netflix Movies Search"});
+        }
     }.bind(this)
 	});
   }
 
   render () {
-  
-    return <div className='app-center'>
-    		  <h1 className="title">Netflix Movies Search</h1>
-              <QueryForm  getQuery={this.submitRequest}/>
-              <Table movies={this.state.movies} errorMessage={this.state.errorMessage}/>
+
+    return <div className='container'>
+              <div className="panel panel-default">
+                <div className="panel-heading text-center">
+                  <h1 className='text-primary'>Netflix Movies Search</h1>
+                </div>
+                <div className="panel-body">
+                  <QueryForm  getQuery={this.submitRequest}/>
+                  <Table movies={this.state.movies} errorMessage={this.state.errorMessage}/>
+                </div>
+              </div>
            </div>;
   }
 }

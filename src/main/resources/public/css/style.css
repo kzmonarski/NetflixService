@@ -1,52 +1,12 @@
-.app-center {
-position: relative;
-left: 50px;
-}
-.title {
- color: blue;
- font-size: large;
- margin-top: 30px;
- margin-bottom: 50px;
- margin-left: 10px;
-}
-.form-label label{
-  display: inline-block;
-  width: 100px;
-  text-align: right;
-  margin-right: 10px
-}
 .client-error {
   color : red;
   font-size: medium;
-  margin-left: 10px;
-}
-.button-center {
-  position: relative;
-  top:  10px;
-  left: 145px;
+  text-align: left;
 }
 .total{
   color: blue
 }
-.no-items {
- position: relative;
- top: 10px;
- left: 10px;
- color: blue;
- font-size: medium;
-}
-.server-error {
- position: relative;
- top: 10px;
- left: 30px;
- color: red;
- font-size: medium;
-}
 .poster-error {
 color: red;
 font-size: medium;
-}
-.movies-table{
-margin-top: 50px;
-width: 50%;
 }

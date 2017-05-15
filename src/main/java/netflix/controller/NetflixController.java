@@ -29,14 +29,14 @@ public static final String GetMoviesPath = "/getMovies.json";
 	public Route getMoviesRoute() {
 		Route route = (Request request, Response response) -> {	
 		logger.debug(String.format("Get request for movies collection with query params: title=%s director=%s actor=%s year=%s",
-					request.queryParams("title"),request.queryParams("director"),request.queryParams("actor"),request.queryParams("year")));
+					request.queryParams("title"),request.queryParams("director"),request.queryParams("actor"),request.queryParams("releaseYear")));
 		
 		String title = Optional.ofNullable(request.queryParams("title")).orElse("");
 		String director = Optional.ofNullable(request.queryParams("director")).orElse("");
 		String actor = Optional.ofNullable(request.queryParams("actor")).orElse("");
-		String year = Optional.ofNullable(request.queryParams("year")).orElse("");
+		String releaseYear = Optional.ofNullable(request.queryParams("releaseYear")).orElse("");
 		
-		SearchCriteria searchCriteria = new SearchCriteria(title,director,actor,year);
+		SearchCriteria searchCriteria = new SearchCriteria(title,director,actor,releaseYear);
 		
 		Movies movies = netflixService.getMoviesBy(searchCriteria);
 		response.type("application/json");

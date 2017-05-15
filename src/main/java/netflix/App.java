@@ -41,7 +41,7 @@ public static void main( String[] args )
     	});
     	Spark.internalServerError((req, res) -> {
     	    res.type(APPLICATION_JSON);
-    	    return gsonResponseTransformer.render(new ErrorMessage("Couldn't connect to NetFlix"));
+    	    return gsonResponseTransformer.render(new ErrorMessage("Couldn't connect to NetFlix Service"));
     	});
     }
 

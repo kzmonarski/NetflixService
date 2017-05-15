@@ -10,25 +10,23 @@ export default class Table extends React.Component {
 
     componentWillReceiveProps (nextProps) {
     	if ($.isEmptyObject(nextProps.movies)) {
-  			this.setState({emptyTableMessage: this.getEmptyTableMessage("There aren't any movies that match the last search criteria")})
+  			this.setState({emptyTableMessage: this.getEmptyTableMessage("There aren't any movies that match the search criteria")})
   		};
   	}
 
 	getEmptyTableMessage (message) {
-		return <p className='no-items'>{message}</p>
+		return <h2 className='text-info text-center'>{message}</h2>
 	}
 
   	render () {
 
-  	const renderShowsTotal = function(start, to, total) {
+  const renderShowsTotal = function(start, to, total) {
     	return (
       		<p className='total'>
         		From {start} to {to}, total is {total}
       		</p>
     	);
   	}
-
-  	const emptyTable = <div><p className='no-items'>'There aren't any movies to display'</p></div>;
 
 	const getPoster = function(cell, row){
       return <Poster src={cell}/>
@@ -38,7 +36,7 @@ export default class Table extends React.Component {
       page: 1,
       sizePerPageList: [{
         text: '5', value: 5
-      }, 
+      },
       {
         text: '10', value: 10
       },{
@@ -61,14 +59,14 @@ export default class Table extends React.Component {
       paginationPosition: 'top'
     };
 
-  	const moviesTable =  <div className='movies-table'>
-       		 				<BootstrapTable data={this.props.movies} striped={true} pagination={true} options={options}>
-         						<TableHeaderColumn dataField='show_title' width="400px" dataSort={true} isKey={true}>Movie Name</TableHeaderColumn>
-         						<TableHeaderColumn dataField='poster' dataFormat={getPoster}>Poster</TableHeaderColumn>
-       		 				</BootstrapTable>
-    	   				 </div>
+  	const moviesTable =  <div>
+       		 				          <BootstrapTable data={this.props.movies} striped={true} pagination={true} options={options}>
+         						           <TableHeaderColumn dataField='show_title' dataSort={true} isKey={true}>Movie Name</TableHeaderColumn>
+         						           <TableHeaderColumn dataField='poster' dataFormat={getPoster}>Poster</TableHeaderColumn>
+       		 				          </BootstrapTable>
+    	   				         </div>
 
-  	const errorMessage = <p className='server-error'>{this.props.errorMessage}</p>;
+  	const errorMessage = <h2 className='text-center text-danger'>{this.props.errorMessage}</h2>;
 
     const display = () => {
       if (this.props.errorMessage) {
