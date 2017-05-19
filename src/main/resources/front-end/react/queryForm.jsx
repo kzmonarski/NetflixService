@@ -4,7 +4,9 @@ import FORMS from 'newforms';
 export default class Queryform extends React.Component {
 	constructor(props) {
      super(props);
-     this.state = {form : this.getForm()};
+     this.state = {form : this.getForm(),
+     			   message: ''
+     			  };
      this.onSubmit = this.onSubmit.bind(this);
      this.onFormChange = this.onFormChange.bind(this);
      this.submitQuery = this.submitQuery.bind(this);
@@ -12,18 +14,26 @@ export default class Queryform extends React.Component {
 
 	onFormChange() {
 	  this.forceUpdate();
+	  this.setState({message: ''});
 	}
+	
+	componentWillReceiveProps (nextProps) {
+  	  this.setState({message: nextProps.message})
+  	}
 
     onSubmit (event) {
       event.preventDefault();
-      if (!this.state.form.cleanedData.title && !this.state.form.cleanedData.actor
-         && !this.state.form.cleanedData.director && !this.state.form.cleanedData.releaseDate) {
-
-          this.state.form.addError('',"You haven't specified any fields");
-          this.onFormChange();
+     if (!this.state.form.isValid()){
+     	this.state.form.addError('','There is an error in the form');
+     	this.onFormChange();
+     }
+      else if (!this.state.form.cleanedData.title && !this.state.form.cleanedData.actor
+         	   && !this.state.form.cleanedData.director && !this.state.form.cleanedData.releaseDate) {
+        this.state.form.addError('',"You haven't specified any fields");
+        this.onFormChange();
       }
-      else if (this.state.form.isValid()) {
-      	this.submitQuery();
+      	else if (this.state.form.isValid()) {
+      	  this.submitQuery();
         }
     }
 
@@ -82,6 +92,7 @@ export default class Queryform extends React.Component {
     }
 
   render () {
+  console.log('render: ' +  this.state.errorMessage);
       return <div>
       			<form className='form-horizontal' onSubmit={this.onSubmit}>
               		<div className='form-group'>
@@ -96,6 +107,7 @@ export default class Queryform extends React.Component {
               			</div>
               		</div>
              	</form>
+             	<h2 className='text-center text-danger'>{this.state.message}</h2>
       		 </div>
   }
 }

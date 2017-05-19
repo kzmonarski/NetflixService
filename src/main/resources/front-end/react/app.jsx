@@ -7,7 +7,7 @@ class App extends React.Component {
 constructor(props) {
         super(props);
         this.state = {movies : [],
-        			       errorMessage: ''};
+        			  message: {}};
         this.submitRequest = this.submitRequest.bind(this);
     }
 
@@ -20,16 +20,28 @@ constructor(props) {
     data: data,
 
     success: function(response) {
-        console.log(response);
-        this.setState({movies:response.movies});
+      console.log(response);
+      if ($.isEmptyObject(response.movies)) {
+      	this.setState({movies: [],
+					   message: "There aren't any movies that match the search criteria"
+        			});
+      } else {
+      	this.setState({movies: response.movies,
+        			   message: ''
+        			 });
+        }
     }.bind(this),
 
     error: function(xhr) {
         console.log(xhr);
         if (xhr.responseJSON) {
-          this.setState({errorMessage: xhr.responseJSON.message});
+          this.setState({message: xhr.responseJSON.message,
+          				 movies: []
+          			   });
         } else {
-          this.setState({errorMessage: "Couldn't connect to Netflix Movies Search"});
+          this.setState({message: "Couldn't connect to Netflix Movies Search",
+          				 movies: []
+          			   });
         }
     }.bind(this)
 	});
@@ -43,8 +55,8 @@ constructor(props) {
                   <h1 className='text-primary'>Netflix Movies Search</h1>
                 </div>
                 <div className="panel-body">
-                  <QueryForm  getQuery={this.submitRequest}/>
-                  <Table movies={this.state.movies} errorMessage={this.state.errorMessage}/>
+                  <QueryForm  getQuery={this.submitRequest} message={this.state.message}/>
+                  <Table movies={this.state.movies}/>
                 </div>
               </div>
            </div>;

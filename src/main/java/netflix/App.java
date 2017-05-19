@@ -36,7 +36,7 @@ public static void main( String[] args )
     	//ExceptionHandling
     	Spark.exception(NetFlixServiceException.class, (exception, request, response) -> {
     		response.type(APPLICATION_JSON);  
-    		response.status();
+    		response.status(400);
 			response.body(((NetFlixServiceException)exception).exportTo(new Gson()::toJson));
     	});
     	Spark.internalServerError((req, res) -> {

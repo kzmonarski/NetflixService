@@ -7,10 +7,10 @@ import java.util.Optional;
 
 public class SearchCriteria {
 	
-	private static final String YEAR_IS_NOT_A_NUMBER = "Year is not a number";
-	private static final String AT_LEASE_ON_SEARCH_PARAMETER_HAS_TO_BE_PROVIDED = "At lease on search parameter has to be provided";
-	private static final String DATE_IS_OUT_OF_VALID_RANGE_1900_UP_TILL_NOW = "Date is out of valid range 1900 up till now";
-	private static final String RELEASE_DATE_CAN_BE_ONLY_PROVIDED_IN_CONJUCTION_WITH_TITLE_NAME = "Release date can be only provided in conjuction with title name";
+	public static final String YEAR_IS_NOT_A_NUMBER = "Year is not a number";
+	public static final String AT_LEAST_ON_SEARCH_PARAMETER_HAS_TO_BE_PROVIDED = "At lease on search parameter has to be provided";
+	public static final String DATE_IS_OUT_OF_VALID_RANGE_1900_UP_TILL_NOW = "Date is out of valid range: 1900 up till now";
+	public static final String RELEASE_DATE_CAN_BE_ONLY_PROVIDED_IN_CONJUCTION_WITH_TITLE_NAME = "Release date can be only provided in conjuction with title name";
 
 	private static final LocalDate before = LocalDate.ofYearDay(1900, 1);
 	
@@ -34,9 +34,9 @@ public class SearchCriteria {
 
 	private void validateYear(String title, String year) {
 		if (!year.isEmpty()){
-		validatePresenceOfTitle(title);
 		validateIfNumber(year);
 		validateYearRange(year);
+		validatePresenceOfTitle(title);
 		}
 	}
 
@@ -64,7 +64,7 @@ public class SearchCriteria {
 
 	private void validateIfEmply(String title, String director, String actor, String year) {
 		if (title.isEmpty() && director.isEmpty() && actor.isEmpty() && year.isEmpty()){
-			throw new NetFlixServiceException(AT_LEASE_ON_SEARCH_PARAMETER_HAS_TO_BE_PROVIDED);
+			throw new NetFlixServiceException(AT_LEAST_ON_SEARCH_PARAMETER_HAS_TO_BE_PROVIDED);
 		}
 	}
 
