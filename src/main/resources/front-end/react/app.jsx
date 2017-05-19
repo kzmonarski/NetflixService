@@ -58,7 +58,7 @@ constructor(props) {
                   <QueryForm  getQuery={this.submitRequest} message={this.state.message}/>
                   <Table movies={this.state.movies}/>
                 </div>
-              </div>
+             </div>
            </div>;
   }
 }

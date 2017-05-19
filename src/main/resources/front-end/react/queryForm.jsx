@@ -97,7 +97,7 @@ export default class Queryform extends React.Component {
       			<form className='form-horizontal' onSubmit={this.onSubmit}>
               		<div className='form-group'>
               			<div className="col-sm-offset-2 col-sm-8 client-error">
-              				{this.state.form.nonFieldErrors().messages()}
+              				{this.state.form.nonFieldErrors().messages()[0]}
               			</div>
               		</div>
               		{this.state.form.render()}
